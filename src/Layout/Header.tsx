@@ -11,14 +11,14 @@ import { isAlbumVisible } from '../Recoil/Atoms/isAlbumVisible'
 
 const currentAlbum = localStorage.getItem('albums')
 export const Header = () => {
-  const [current, setCurrent] = useState(currentAlbum ?? '1989-1994')
+  const [current, setCurrent] = useState(currentAlbum ?? '1989-1995')
   const setAlbum = useSetRecoilState(chosenAlbum)
   const [hasAlbum, setHasAlbum] = useRecoilState(isAlbumVisible)
 
   useEffect(() => {
     if (!ALL_YEARS.find(year => year.year === currentAlbum)) {
-      setCurrent('1989-1994')
-      localStorage.setItem('albums', '1989-1994')
+      setCurrent('1989-1995')
+      localStorage.setItem('albums', '1989-1995')
     }
   }, [currentAlbum])
 
@@ -29,7 +29,6 @@ export const Header = () => {
     setCurrent(e.key)
   }
 
-  const currentTitle = YEARS_DATA?.find((year: any) => year?.key === current).label
   const AlbumsListToggle = () => {
     setHasAlbum(!hasAlbum)
   }
@@ -38,14 +37,14 @@ export const Header = () => {
     <div className="header">
       <div className="header__title">
         <p>Galina Malareva</p>
-        <p className="header__sub-title">Photo gallery: 1970 - 1994</p>
+        <p className="header__sub-title">Photo gallery: 1970 - 199</p>
       </div>
       <Menu onClick={chooseAlbum}
         selectedKeys={[current]} mode="horizontal"
         items={YEARS_DATA} className="header__albums"
       />
       <Divider/>
-      <div className="albums-page__title">{ currentTitle }</div>
+      <div className="albums-page__title">{localStorage.getItem('albums')}</div>
       { current && hasAlbum && <AlbumsPage albums={current}/> }
       <div className="header__albums-toggle">
         <Divider/>

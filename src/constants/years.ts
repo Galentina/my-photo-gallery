@@ -1,6 +1,7 @@
+import { MenuProps } from 'antd'
 import { ALL_ALBUMS } from './AllAlbumsConstant'
 
-export const YEARS_DATA: any = [
+export const YEARS_DATA: MenuProps['items'] = [
   {
     label: '1970 - 1977',
     key: '1970-1977',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './layout.scss'
-import { YEARS_DATA } from '../constants/years'
+import { ALL_YEARS, YEARS_DATA } from '../constants/years'
 import { Divider, Menu } from 'antd'
 import type { MenuProps } from 'antd'
 import { AlbumsPage } from '../pages/AlbumsPage'
@@ -11,13 +11,14 @@ import { isAlbumVisible } from '../Recoil/Atoms/isAlbumVisible'
 
 const currentAlbum = localStorage.getItem('albums')
 export const Header = () => {
-  const [current, setCurrent] = useState(currentAlbum ?? '2023')
+  const [current, setCurrent] = useState(currentAlbum ?? '1989-1994')
   const setAlbum = useSetRecoilState(chosenAlbum)
   const [hasAlbum, setHasAlbum] = useRecoilState(isAlbumVisible)
 
   useEffect(() => {
-    if (!currentAlbum) {
-      localStorage.setItem('albums', '2023')
+    if (!ALL_YEARS.find(year => year.year === currentAlbum)) {
+      setCurrent('1989-1994')
+      localStorage.setItem('albums', '1989-1994')
     }
   }, [currentAlbum])
 
@@ -28,21 +29,23 @@ export const Header = () => {
     setCurrent(e.key)
   }
 
+  const currentTitle = YEARS_DATA?.find((year: any) => year?.key === current).label
   const AlbumsListToggle = () => {
     setHasAlbum(!hasAlbum)
   }
-  console.log(current)
+
   return (
     <div className="header">
       <div className="header__title">
-        Galina Malareva - Photo gallery
+        <p>Galina Malareva</p>
+        <p className="header__sub-title">Photo gallery: 1970 - 1994</p>
       </div>
       <Menu onClick={chooseAlbum}
         selectedKeys={[current]} mode="horizontal"
         items={YEARS_DATA} className="header__albums"
       />
       <Divider/>
-      <div className="albums-page__title">{localStorage.getItem('albums')}</div>
+      <div className="albums-page__title">{ currentTitle }</div>
       { current && hasAlbum && <AlbumsPage albums={current}/> }
       <div className="header__albums-toggle">
         <Divider/>
